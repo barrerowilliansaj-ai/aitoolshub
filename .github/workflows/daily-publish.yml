@@ -23,11 +23,11 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install openai markdown
+          pip install -r requirements.txt
       
       - name: Generate new article
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python daily_automation.py
       
@@ -47,4 +47,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./output
-          publish_branch: gh-pages
+          # The branch the action should deploy to.
+          publish_branch: main
+          # Overwrite the content of the branch.
+          force_orphan: true
