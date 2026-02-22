@@ -11,7 +11,8 @@ import re
 import hashlib
 from datetime import datetime, timezone
 from pathlib import Path
-from openai import OpenAI
+from google import genai
+from google.genai import types
 
 # ============================================================
 # CONFIGURACIÓN
@@ -39,12 +40,15 @@ OUTPUT_DIR = _BASE_DIR / "output"
 POSTS_DIR = _BASE_DIR / "posts"
 
 # ============================================================
-# CLIENTE OPENAI
+# CLIENTE GEMINI (inicializado al momento de uso)
 # ============================================================
-client = OpenAI()
+def _get_client():
+    """Retorna el cliente Gemini configurado."""
+    return genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
+
 
 def generate_article(topic: dict) -> dict:
-    """Genera un artículo SEO-optimizado usando GPT."""
+    """Genera un artículo SEO-optimizado usando Gemini."""
     
     prompt = f"""Write a comprehensive, SEO-optimized blog article about: "{topic['title']}"
 
@@ -72,18 +76,14 @@ Format the response as JSON with these fields:
 - estimated_read_time: reading time in minutes
 """
 
-    response = client.chat.completions.create(
-        model="gpt-4.1-mini",
-        messages=[
-            {"role": "system", "content": "You are an expert content writer specializing in AI tools, productivity, and technology. You write engaging, SEO-optimized articles that genuinely help readers make informed decisions about AI tools."},
-            {"role": "user", "content": prompt}
-        ],
-        response_format={"type": "json_object"},
-        temperature=0.7,
-        max_tokens=3000
+    full_prompt = """You are an expert content writer specializing in AI tools, productivity, and technology. You write engaging, SEO-optimized articles that genuinely help readers make informed decisions about AI tools.\n\n""" + prompt
+    ai_client = _get_client()
+    response = ai_client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=full_prompt,
+        config=types.GenerateContentConfig(response_mime_type="application/json")
     )
-    
-    article_data = json.loads(response.choices[0].message.content)
+    article_data = json.loads(response.text)
     article_data['keyword'] = topic['keyword']
     article_data['slug'] = generate_slug(article_data['title'])
     article_data['date'] = datetime.now(timezone.utc).strftime('%Y-%m-%d')

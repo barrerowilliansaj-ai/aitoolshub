@@ -66,25 +66,24 @@ def select_next_topic(published_keywords: set) -> dict | None:
 
 def generate_new_topic() -> dict:
     """Genera un nuevo tema usando IA cuando se agotan los predefinidos."""
-    from openai import OpenAI
-    client = OpenAI()
+    from google import genai
+    from google.genai import types
+    import os
+    model_client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
     
-    response = client.chat.completions.create(
-        model="gpt-4.1-mini",
-        messages=[
-            {"role": "system", "content": "You are an SEO expert specializing in AI tools content."},
-            {"role": "user", "content": """Generate a new blog topic for an AI tools review blog targeting freelancers and small businesses.
+    prompt = """You are an SEO expert specializing in AI tools content. Generate a new blog topic for an AI tools review blog targeting freelancers and small businesses.
             
 Return JSON with: title, keyword, secondary_keywords (array of 3), type (review/comparison/guide/listicle), category (Reviews/Comparisons/Guides), priority (1-3)
 
 Focus on: AI writing tools, productivity AI, SEO tools, content creation AI.
-Make it specific and searchable."""}
-        ],
-        response_format={"type": "json_object"},
-        temperature=0.8
-    )
+Make it specific and searchable."""
     
-    return json.loads(response.choices[0].message.content)
+    response = model_client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=prompt,
+        config=types.GenerateContentConfig(response_mime_type="application/json")
+    )
+    return json.loads(response.text)
 
 
 def publish_to_github(output_dir: Path):
