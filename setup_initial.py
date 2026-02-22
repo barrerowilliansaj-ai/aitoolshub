@@ -16,7 +16,7 @@ from daily_automation import log
 
 def generate_static_pages():
     """Genera las páginas estáticas del blog (About, Privacy, Disclaimer)."""
-    output_dir = Path("/home/ubuntu/aitoolsblog/output")
+    output_dir = Path(__file__).parent / "output"
     
     # About page
     about_html = """<!DOCTYPE html>

@@ -19,7 +19,9 @@ sys.path.insert(0, str(Path(__file__).parent))
 from blog_generator import generate_article, save_post, build_site, POSTS_DIR
 from content_topics import CONTENT_TOPICS, ADDITIONAL_TOPICS
 
-LOG_FILE = Path("/home/ubuntu/aitoolsblog/automation.log")
+# Ruta relativa al directorio del script (funciona tanto local como en GitHub Actions)
+_BASE_DIR = Path(__file__).parent
+LOG_FILE = _BASE_DIR / "automation.log"
 
 
 def log(message: str):
@@ -161,7 +163,7 @@ def run_daily_automation():
         log(f"   Total articles: {len(posts)}")
         
         # 6. Publicar en GitHub Pages
-        output_dir = Path("/home/ubuntu/aitoolsblog/output")
+        output_dir = _BASE_DIR / "output"
         log("📤 Publishing to GitHub Pages...")
         publish_to_github(output_dir)
         

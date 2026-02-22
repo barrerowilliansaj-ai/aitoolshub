@@ -30,11 +30,13 @@ AFFILIATE_LINKS = {
     "semrush": "https://www.semrush.com/",
     "hostinger": "https://www.hostinger.com/",
     "canva": "https://www.canva.com/",
-    "grammarly": "https://www.grammarly.com/",
+    "grammarly": "https://grammarly.go2cloud.org/aff_c?offer_id=7&aff_id=156f1f6b",
 }
 
-OUTPUT_DIR = Path("/home/ubuntu/aitoolsblog/output")
-POSTS_DIR = Path("/home/ubuntu/aitoolsblog/posts")
+# Rutas relativas al directorio del script (funciona tanto local como en GitHub Actions)
+_BASE_DIR = Path(__file__).parent
+OUTPUT_DIR = _BASE_DIR / "output"
+POSTS_DIR = _BASE_DIR / "posts"
 
 # ============================================================
 # CLIENTE OPENAI
@@ -157,10 +159,10 @@ def generate_html_post(article: dict) -> str:
     <meta property="og:url" content="{BLOG_URL}/posts/{article['slug']}.html">
     <link rel="canonical" href="{BLOG_URL}/posts/{article['slug']}.html">
     <link rel="stylesheet" href="../static/css/style.css">
-    <!-- Google tag (gtag.js) - Analytics placeholder -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <!-- AdSense placeholder - activate after approval -->
-    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+    <!-- Impact Site Verification -->
+    <meta name='impact-site-verification' value='156f1f6b-4545-4796-a756-2851be9ca640'>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9333843804849647" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
@@ -190,7 +192,13 @@ def generate_html_post(article: dict) -> str:
             
             <!-- Ad placeholder (top) -->
             <div class="ad-container ad-top">
-                <!-- AdSense Ad Unit will go here -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-9333843804849647"
+                     data-ad-slot="auto"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({{}});</script>
             </div>
             
             <div class="article-content">
@@ -199,7 +207,13 @@ def generate_html_post(article: dict) -> str:
             
             <!-- Ad placeholder (middle) -->
             <div class="ad-container ad-middle">
-                <!-- AdSense Ad Unit will go here -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-9333843804849647"
+                     data-ad-slot="auto"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({{}});</script>
             </div>
             
             <footer class="article-footer">
@@ -278,7 +292,10 @@ def generate_homepage(posts: list) -> str:
     <meta property="og:type" content="website">
     <link rel="canonical" href="{BLOG_URL}">
     <link rel="stylesheet" href="static/css/style.css">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <!-- Impact Site Verification -->
+    <meta name='impact-site-verification' value='156f1f6b-4545-4796-a756-2851be9ca640'>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9333843804849647" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
@@ -303,7 +320,13 @@ def generate_homepage(posts: list) -> str:
     
     <!-- Top Ad Banner -->
     <div class="ad-container ad-banner">
-        <!-- AdSense Ad Unit -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-9333843804849647"
+             data-ad-slot="auto"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({{}});</script>
     </div>
     
     <main class="homepage-main">
